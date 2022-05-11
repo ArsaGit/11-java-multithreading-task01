@@ -3,18 +3,17 @@ public class Lucky {
     static int count = 0;
 
     static class LuckyThread extends Thread {
-        private static final Object res = new Object();
-        private int tempCount = 0;
+        private static final Object resX = new Object();
+        private static final Object resC = new Object();
 
         @Override
         public void run() {
+            int tempCount = 0;
             while (true) {
                 int tempX;
-                synchronized (res) {
-                    if (x == 999999) {
-                        count = count + tempCount;
-                        break;
-                    }
+                synchronized (resX) {
+                    if (x == 999999) break;
+
                     x++;
                     tempX = x;
                 }
@@ -24,7 +23,9 @@ public class Lucky {
                     tempCount++;
                 }
             }
-
+            synchronized (resC) {
+                count = count + tempCount;
+            }
         }
     }
 
